@@ -174,7 +174,13 @@ sub parseMacroFile {
 		}
 	}
 	
-	return 0 if %block;
+	if (%block) {
+		error "Error in file parsing. Plugin eventMacro will be disabled.\n".
+		"Error in block '".$block{type}."' of name '".$block{name}."'.\n".
+		"Maybe you forgot to close a block? (with ' } ').\n";
+		return 0;
+	}
+	
 	return {macros => \%macro, automacros => \%automacro};
 }
 
